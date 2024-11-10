@@ -7,7 +7,7 @@ import com.example.ecommerce.ecommerce.enums.UserRole;
 import com.example.ecommerce.ecommerce.respository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,13 +16,13 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public UserDto createUser(SignUpRequest signUpRequest) {
         User user = new User();
         user.setEmail(signUpRequest.getEmail());
         user.setName(signUpRequest.getName());
-        user.setPassword(new BCryptPasswordEncoder().encode(signUpRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         user.setRole(UserRole.CUSTOMER);
         User createdUser = userRepository.save(user);
 
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
             user.setEmail("admin@test.com");
             user.setName("admin");
             user.setRole(UserRole.ADMIN);
-            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+            user.setPassword(passwordEncoder.encode("admin"));
             userRepository.save(user);
         }
     }
