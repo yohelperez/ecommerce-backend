@@ -1,10 +1,13 @@
 package com.example.ecommerce.ecommerce.entity;
 
+import com.example.ecommerce.ecommerce.controller.admin.AdminProductController;
+import com.example.ecommerce.ecommerce.dto.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.security.core.parameters.P;
 
 @Entity
 @Data
@@ -29,4 +32,16 @@ public class Product {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Category category;
+
+    public ProductDto getDto() {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(id);
+        productDto.setName(name);
+        productDto.setPrice(price);
+        productDto.setDescription(description);
+        productDto.setByteImg(img);
+        productDto.setCategoryId(category.getId());
+
+        return productDto;
+    }
 }
